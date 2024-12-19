@@ -1,13 +1,33 @@
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   return (
-    <View className="w-1/2 mx-auto">
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-      <Link href="/profile" className="bg-zinc-900 text-zinc-100 py-2 px-3">
-        Profile
-      </Link>
-    </View>
+    <SafeAreaView className="flex flex-col items-center justify-center gap-6 py-4">
+      <View className="border-4 border-red-600">
+        <Text className="text-2xl text-center">Welcome to Quizzup.</Text>
+      </View>
+      <View className="border-4 border-red-600 w-24">
+        <TouchableOpacity>
+          <Link
+            href="/profile"
+            className="bg-zinc-900 text-zinc-100 text-lg font-bold text-center py-2 px-3"
+          >
+            Profile
+          </Link>
+        </TouchableOpacity>
+      </View>
+      <View className="border-4 border-red-600 w-24">
+        <TouchableOpacity>
+          <Link
+            href="/quizcreate"
+            className="bg-zinc-900 text-zinc-100 text-lg font-bold text-center py-2 px-3"
+          >
+            Create Quiz
+          </Link>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
