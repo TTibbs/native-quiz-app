@@ -5,7 +5,10 @@ export type RootStackParamList = {
   Quiz: {
     id: number;
     amount: number;
+    difficulty: "easy" | "medium" | "hard";
+    type: "multiple" | "boolean";
   };
+  Profile: undefined;
 };
 
 declare global {

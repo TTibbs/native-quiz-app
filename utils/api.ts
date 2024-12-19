@@ -12,7 +12,9 @@ const apiClient = axios.create({
 
 export const fetchTriviaQuestions = async (
   amount: number,
-  category: number
+  category: number,
+  difficulty: "easy" | "medium" | "hard",
+  type: "multiple" | "boolean"
 ): Promise<TriviaQuestion[]> => {
   try {
     const response = await apiClient.get<TriviaApiResponse<TriviaQuestion>>(
@@ -21,7 +23,8 @@ export const fetchTriviaQuestions = async (
         params: {
           amount,
           category,
-          type: "multiple",
+          difficulty,
+          type,
         },
       }
     );

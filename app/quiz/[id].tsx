@@ -13,7 +13,12 @@ import { fetchTriviaQuestions } from "../../utils/api";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 const QuizScreen = () => {
-  const { id, amount } = useLocalSearchParams<{ id: string; amount: string }>();
+  const { id, amount, difficulty, type } = useLocalSearchParams<{
+    id: string;
+    amount: string;
+    difficulty: string;
+    type: string;
+  }>();
   const [questions, setQuestions] = useState<TriviaQuestion[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -30,7 +35,12 @@ const QuizScreen = () => {
       try {
         const categoryId = parseInt(id, 10);
         const questionAmount = parseInt(amount, 10);
-        const data = await fetchTriviaQuestions(questionAmount, categoryId);
+        const data = await fetchTriviaQuestions(
+          questionAmount,
+          categoryId,
+          difficulty as "easy" | "medium" | "hard",
+          type as "multiple" | "boolean"
+        );
         setQuestions(data);
 
         if (data.length > 0) {
@@ -49,24 +59,17 @@ const QuizScreen = () => {
       }
     };
     loadQuestions();
-  }, [id, amount]);
+  }, [id, amount, difficulty, type]);
 
-  const shuffleAnswers = (answers: string[]): string[] => {
-    return answers.sort(() => Math.random() - 0.5);
-  };
+  const shuffleAnswers = (answers: string[]): string[] =>
+    answers.sort(() => Math.random() - 0.5);
 
   const handleAnswerSelect = (selectedAnswer: string) => {
     setSelectedAnswer(selectedAnswer);
-
     const currentQuestion = questions[currentQuestionIndex];
     const isCorrect = selectedAnswer === currentQuestion.correct_answer;
-
     setAnswerStatus(isCorrect ? "correct" : "incorrect");
-
-    if (isCorrect) {
-      setScore((prevScore) => prevScore + 1);
-    }
-
+    if (isCorrect) setScore((prev) => prev + 1);
     setTimeout(() => {
       const nextIndex = currentQuestionIndex + 1;
       if (nextIndex < questions.length) {
@@ -78,12 +81,23 @@ const QuizScreen = () => {
             nextQuestion.correct_answer,
           ])
         );
-      } else {
-        setModalVisible(true);
-      }
+      } else setModalVisible(true);
       setSelectedAnswer(null);
       setAnswerStatus(null);
     }, 1000);
+  };
+
+  const restartQuiz = () => {
+    setModalVisible(false);
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    const firstQuestion = questions[0];
+    setShuffledAnswers(
+      shuffleAnswers([
+        ...firstQuestion.incorrect_answers,
+        firstQuestion.correct_answer,
+      ])
+    );
   };
 
   if (loading) {
@@ -99,7 +113,6 @@ const QuizScreen = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView className="flex-1 p-4">
-        {/* Modal for Quiz End */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -114,6 +127,14 @@ const QuizScreen = () => {
               <Text className="text-lg text-center mb-4">
                 Your Score: {score} / {questions.length}
               </Text>
+              <Pressable
+                className="bg-blue-500 p-4 rounded mb-4"
+                onPress={restartQuiz}
+              >
+                <Text className="text-white text-center font-bold">
+                  Restart Quiz
+                </Text>
+              </Pressable>
               <Pressable className="bg-blue-500 p-4 rounded mb-4">
                 <Link
                   href="/quizcreate"
