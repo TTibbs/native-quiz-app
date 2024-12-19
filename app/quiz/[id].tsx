@@ -136,10 +136,7 @@ const QuizScreen = () => {
                 </Text>
               </Pressable>
               <Pressable className="bg-blue-500 p-4 rounded mb-4">
-                <Link
-                  href="/quizcreate"
-                  className="text-white text-center font-bold"
-                >
+                <Link href="/quiz" className="text-white text-center font-bold">
                   New Quiz
                 </Link>
               </Pressable>
@@ -162,8 +159,8 @@ const QuizScreen = () => {
               isSelected && answerStatus === "correct"
                 ? "bg-green-500"
                 : isSelected && answerStatus === "incorrect"
-                ? "bg-red-500"
-                : "bg-white";
+                  ? "bg-red-500"
+                  : "bg-white";
 
             return (
               <TouchableOpacity

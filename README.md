@@ -1,31 +1,38 @@
-# Welcome to your Expo app 👋
+# Welcome to Quizzup 🎮
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Quizzup is a React Native Expo quiz app where users can create and take quizzes. This project was created with create-expo-app.
+
+## Features
+
+- Create custom quizzes
+- Answer quiz questions from a variety of categories
+- Interactive UI built using React Native and Expo
+- Quiz questions powered by [Open Trivia Database (OTDB)](https://opentdb.com/) (special thanks to OTDB for their API and questions!)
 
 ## Get started
 
-1. Install dependencies
+Install dependencies:
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-2. Start the app
+Start the app:
 
-   ```bash
-    npx expo start
-   ```
+```bash
+npx expo start
+```
 
-In the output, you'll find options to open the app in a
+In the output, you'll find options to open the app in a:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Development build
+- Android emulator
+- iOS simulator
+- Expo Go, a limited sandbox for trying out app development with Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+You can start developing by editing the files inside the app directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction/).
 
-## Get a fresh project
+## Reset the project
 
 When you're ready, run:
 
@@ -33,18 +40,22 @@ When you're ready, run:
 npm run reset-project
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+This command will move the starter code to the app-example directory and create a blank app directory where you can start developing.
+
+## Credit
+
+Quiz questions provided by Open Trivia Database (OTDB).
 
 ## Learn more
 
 To learn more about developing your project with Expo, look at the following resources:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our guides.
 - [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
 ## Join the community
 
-Join our community of developers creating universal apps.
+Join our community of developers creating universal apps:
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [Discord community](https://chat.expo.dev/): Chat with Expo users and ask questions.

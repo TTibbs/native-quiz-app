@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, Button, TextInput } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useRouter } from "expo-router";
-import { fetchTriviaCategories } from "../utils/api";
-import { TriviaCategory } from "../types/quiz";
+import { fetchTriviaCategories } from "../../utils/api";
+import { TriviaCategory } from "../../types/quiz";
 
-const QuizCreate = () => {
+const Quiz = () => {
   const [categories, setCategories] = useState<TriviaCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [selectedAmount, setSelectedAmount] = useState<string>("10");
@@ -116,4 +116,4 @@ const QuizCreate = () => {
   );
 };
 
-export default QuizCreate;
+export default Quiz;

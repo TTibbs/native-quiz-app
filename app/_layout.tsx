@@ -3,10 +3,20 @@ import "../global.css";
 
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="quizcreate" options={{ title: "Create Quiz" }} />
+    <Stack
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#f58b3b",
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}
+    >
+      <Stack.Screen name="index" options={{ title: "Home" }} />
+      <Stack.Screen name="quiz/index" options={{ title: "Create Quiz" }} />
       <Stack.Screen name="quiz/[id]" options={{ title: "Quiz" }} />
-      <Stack.Screen name="profile" options={{ title: "Profile" }} />
     </Stack>
   );
 }

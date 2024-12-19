@@ -1,29 +1,31 @@
 import { Link } from "expo-router";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, Image } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   return (
     <SafeAreaProvider>
-      <SafeAreaView className="flex flex-col items-center justify-center gap-6 py-4">
+      <SafeAreaView className="flex flex-1 flex-col items-center justify-center gap-6 py-4">
+        <View className="items-center mb-6">
+          <Image
+            source={require("../assets/images/logo.png")}
+            style={{ width: 300, height: 300 }}
+            resizeMode="contain"
+          />
+        </View>
         <View>
-          <Text className="text-2xl text-center">Welcome to Quizzup</Text>
+          <Text className="text-2xl font-bold text-center">
+            Welcome to Quizzup
+          </Text>
         </View>
-        <View className="border-4 border-red-600 w-24">
+        <View className="items-center">
+          <Text className="text-lg mb-4">
+            Create a quiz using the button below
+          </Text>
           <TouchableOpacity>
             <Link
-              href="/profile"
-              className="bg-zinc-900 text-zinc-100 text-lg font-bold text-center py-2 px-3"
-            >
-              Profile
-            </Link>
-          </TouchableOpacity>
-        </View>
-        <View className="border-4 border-red-600 w-24">
-          <TouchableOpacity>
-            <Link
-              href="/quizcreate"
-              className="bg-zinc-900 text-zinc-100 text-lg font-bold text-center py-2 px-3"
+              href="/quiz"
+              className="w-36 bg-orange-500 text-zinc-100 text-lg font-bold text-center py-2 rounded"
             >
               Create Quiz
             </Link>
