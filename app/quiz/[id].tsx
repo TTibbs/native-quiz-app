@@ -1,16 +1,30 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  TouchableOpacity,
-  Modal,
-  Pressable,
-} from "react-native";
+import { View, Text, ActivityIndicator, Modal, Pressable } from "react-native";
 import { Link, useLocalSearchParams } from "expo-router";
 import { TriviaQuestion } from "../../types/quiz";
 import { fetchTriviaQuestions } from "../../utils/api";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
+const decodeHTMLEntities = (text: string): string => {
+  const entities: Record<string, string> = {
+    "&quot;": '"',
+    "&amp;": "&",
+    "&lt;": "<",
+    "&gt;": ">",
+    "&#039;": "'",
+    "&rsquo;": "'",
+    "&lsquo;": "'",
+    "&ldquo;": '"',
+    "&rdquo;": '"',
+    "&hellip;": "...",
+    "&shy;": "",
+    "&mdash;": "—",
+    "&ndash;": "–",
+    "&nbsp;": " ",
+  };
+
+  return text.replace(/&[^;]+;/g, (entity) => entities[entity] || entity);
+};
 
 const QuizScreen = () => {
   const { id, amount, difficulty, type } = useLocalSearchParams<{
@@ -41,10 +55,16 @@ const QuizScreen = () => {
           difficulty as "easy" | "medium" | "hard",
           type as "multiple" | "boolean"
         );
-        setQuestions(data);
+        const decodedData = data.map((q) => ({
+          ...q,
+          question: decodeHTMLEntities(q.question),
+          correct_answer: decodeHTMLEntities(q.correct_answer),
+          incorrect_answers: q.incorrect_answers.map(decodeHTMLEntities),
+        }));
+        setQuestions(decodedData);
 
-        if (data.length > 0) {
-          const firstQuestion = data[0];
+        if (decodedData.length > 0) {
+          const firstQuestion = decodedData[0];
           setShuffledAnswers(
             shuffleAnswers([
               ...firstQuestion.incorrect_answers,
@@ -112,36 +132,42 @@ const QuizScreen = () => {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView className="flex-1 p-4">
+      <SafeAreaView className="flex-1 items-center justify-center p-4">
         <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => setModalVisible(false)}
         >
-          <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
+          <View className="flex-1 justify-center items-center bg-modalBg bg-opacity-500">
             <View className="w-4/5 bg-white p-6 rounded-lg shadow-lg">
-              <Text className="text-xl font-bold text-center mb-4">
+              <Text className="text-2xl font-bold text-center mb-4">
                 Quiz Completed!
               </Text>
-              <Text className="text-lg text-center mb-4">
+              <Text className="text-xl text-center mb-4">
                 Your Score: {score} / {questions.length}
               </Text>
               <Pressable
-                className="bg-blue-500 p-4 rounded mb-4"
+                className="bg-redSecondary w-[50%] mx-auto py-3 rounded-xl mb-4"
                 onPress={restartQuiz}
               >
-                <Text className="text-white text-center font-bold">
+                <Text className="text-xl text-white text-center font-bold">
                   Restart Quiz
                 </Text>
               </Pressable>
-              <Pressable className="bg-blue-500 p-4 rounded mb-4">
-                <Link href="/quiz" className="text-white text-center font-bold">
+              <Pressable className="bg-redSecondary w-[50%] mx-auto py-3 rounded-xl mb-4">
+                <Link
+                  href="/quiz"
+                  className="text-xl text-white text-center font-bold"
+                >
                   New Quiz
                 </Link>
               </Pressable>
-              <Pressable className="bg-gray-500 p-4 rounded">
-                <Link href="/" className="text-white text-center font-bold">
+              <Pressable className="bg-redPrimary w-[50%] mx-auto py-3 rounded-xl">
+                <Link
+                  href="/"
+                  className="text-xl text-white text-center font-bold"
+                >
                   Home
                 </Link>
               </Pressable>
@@ -149,30 +175,34 @@ const QuizScreen = () => {
           </View>
         </Modal>
 
-        <Text className="text-lg font-bold mb-4">
+        <Text className="text-xl text-center font-bold mb-4">
           {currentQuestion.question}
         </Text>
-        <View className="grid grid-cols-2 gap-4">
-          {shuffledAnswers.map((answer, index) => {
-            const isSelected = answer === selectedAnswer;
-            const answerClass =
-              isSelected && answerStatus === "correct"
-                ? "bg-green-500"
-                : isSelected && answerStatus === "incorrect"
-                  ? "bg-red-500"
-                  : "bg-white";
+        <View className="w-full px-4">
+          <View className="flex-row flex-wrap justify-between">
+            {shuffledAnswers.map((answer, index) => {
+              const isSelected = answer === selectedAnswer;
+              const answerClass =
+                isSelected && answerStatus === "correct"
+                  ? "bg-green-500"
+                  : isSelected && answerStatus === "incorrect"
+                    ? "bg-red-500"
+                    : "bg-white";
 
-            return (
-              <TouchableOpacity
-                key={index}
-                className={`p-4 border border-gray-300 rounded ${answerClass}`}
-                disabled={selectedAnswer !== null}
-                onPress={() => handleAnswerSelect(answer)}
-              >
-                <Text className="text-center">{answer}</Text>
-              </TouchableOpacity>
-            );
-          })}
+              return (
+                <Pressable
+                  key={index}
+                  className={`p-4 border border-gray-300 rounded-xl ${answerClass} mb-4 w-[48%] justify-center items-center`}
+                  disabled={selectedAnswer !== null}
+                  onPress={() => handleAnswerSelect(answer)}
+                >
+                  <Text className="text-center flex-shrink-1 flex-wrap">
+                    {answer}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

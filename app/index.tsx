@@ -25,7 +25,7 @@ export default function Index() {
           <TouchableOpacity>
             <Link
               href="/quiz"
-              className="w-36 bg-orange-500 text-zinc-100 text-lg font-bold text-center py-2 rounded"
+              className="w-36 bg-redSecondary text-zinc-100 text-lg font-bold text-center py-3 rounded-xl"
             >
               Create Quiz
             </Link>
